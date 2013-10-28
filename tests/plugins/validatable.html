@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Validatable plugin unit tests</title>
+		<meta http-equiv='X-UA-Compatible' content='IE=edge' />
+		<link rel='stylesheet' href='http://code.jquery.com/qunit/qunit-git.css' type='text/css' />
+		<script src='http://code.jquery.com/qunit/qunit-git.js'></script>
+		<script src='../js/qunit/reporter.js'></script>
+		<script src='../js/utils.js'></script>
+		<script src='../js/tinymce_loader.js'></script>
+		<script>
+			var editor;
+
+			QUnit.config.reorder = false;
+			QUnit.config.autostart = false;
+
+			module('Validatable plugin', {
+				autostart: false
+			});
+
+			test('Defaults', function() {
+				ok(!editor.formElement.checkValidity());
+
+				editor.setContent('<p>text</p>');
+				ok(editor.formElement.checkValidity());
+
+				tinymce.DOM.setAttrib(editor.getElement(), 'required', '');
+				editor.setContent('');
+				ok(editor.formElement.checkValidity());
+
+				tinymce.DOM.setAttrib(editor.getElement(), 'required', 'required');
+			});
+
+			test('validatable_exclude_from_validation: true', function() {
+				editor.settings.validatable_exclude_from_validation = true;
+				editor.fire('init');
+				editor.setContent('');
+				ok(editor.formElement.checkValidity());
+				ok(!!tinymce.DOM.getAttrib(editor.getElement(), 'disabled'));
+
+				editor.fire('submit');
+				ok(!tinymce.DOM.getAttrib(editor.getElement(), 'disabled'));
+			});
+
+			tinymce.init({
+				selector: '#test-target',
+				plugins: 'validatable',
+				init_instance_callback: function(ed) {
+					editor = ed;
+					QUnit.start();
+				}
+			});
+		</script>
+	</head>
+	<body>
+		<h1 id='qunit-header'>Validatable plugin unit tests</h1>
+		<h2 id='qunit-banner'></h2>
+		<div id='qunit-testrunner-toolbar'></div>
+		<h2 id='qunit-userAgent'></h2>
+		<ol id='qunit-tests'></ol>
+
+		<form>
+			<textarea id='test-target' name='test-target' required></textarea>
+		</form>
+	</body>
+</html>
