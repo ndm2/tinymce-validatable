@@ -75,8 +75,9 @@ tinymce.PluginManager.add('validatable', function(editor)
 			height: '100%',
 			margin: 0,
 			padding: 0,
+			color: 'transparent',
+			fontSize: 0,
 			opacity: opacity,
-			textIndent: '9999px',
 			border: 'none',
 			borderRadius: '2px'
 		});
