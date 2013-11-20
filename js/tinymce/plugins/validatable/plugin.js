@@ -65,7 +65,7 @@ tinymce.PluginManager.add('validatable', function(editor)
 		var opacity = editor.settings.validatable_hide_completely ? 0 : 1;
 
 		DOM.setStyles(target, {
-			display: 'block',
+			display: 'none',
 			visibility: 'visible',
 			position: 'absolute',
 			zIndex: 0,
